@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'PixelifySans';
+  src: url('font/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf');
+}
