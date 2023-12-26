@@ -10,6 +10,6 @@ interface Props {
   type: TypeTetrominoKey;
 };
 
-export const Cell: React.FC<Props> = ({ type }) => (
+export const Cell: React.FC<Props> = React.memo(({ type }) => (
   <StyledCell type={type} color={TETROMINOS[type].color} />
-);
+));

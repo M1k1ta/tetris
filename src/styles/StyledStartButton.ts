@@ -8,9 +8,14 @@ export const StyledStartButton = styled.button`
   width: 100%;
   border-radius: 20px;
   border: none;
-  background: #333;
+  background: #555;
   font-family: PixelifySans, Arial, Arial, Helvetica, sans-serif;
   font-size: 1rem;
   outline: none;
   cursor: pointer;
+  transition: background-color 400ms;
+
+  &:hover {
+    background-color: #999;
+  }
 `;

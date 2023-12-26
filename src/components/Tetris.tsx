@@ -7,6 +7,7 @@ import { StyledTetris, StyledTetrisWrapper } from '../styles/StyledTetris';
 import { useInterval } from '../hooks/useInterval';
 import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
+import { useGameStatus } from '../hooks/useGameStatus';
 
 // Components
 import { Stage } from './Stage';
@@ -22,6 +23,7 @@ export const Tetris: React.FC = () => {
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
+  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
 
   const movePlayer = (dir: number) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -31,12 +33,20 @@ export const Tetris: React.FC = () => {
 
   const startGame = () => {
     setStage(createStage());
-    setDropTime(1000);
+    setDropTime(1000 / (level + 1));
     resetPlayer();
     setGameOver(false);
+    setScore(0);
+    setRows(0);
+    setLevel(0);
   };
 
   const drop = () => {
+    if (rows > (level + 1) * 5) {
+      setLevel(prev => prev + 1);
+      setDropTime(1000 / (level + 1));
+    }
+
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
@@ -51,8 +61,8 @@ export const Tetris: React.FC = () => {
 
   const keyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
-      if (key === 'ArrowDown') {
-        setDropTime(1000);
+      if (key === 'ArrowDown' || key.toLowerCase() === 's') {
+        setDropTime(1000 / (level + 1));
       }
     }
   };
@@ -64,13 +74,13 @@ export const Tetris: React.FC = () => {
 
   const move = ({ key }: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
-      if (key === 'ArrowLeft') {
+      if (key === 'ArrowLeft' || key.toLowerCase() === 'a') {
         movePlayer(-1);
-      } else if (key === 'ArrowRight') {
+      } else if (key === 'ArrowRight' || key.toLowerCase() === 'd') {
         movePlayer(1);
-      } else if (key === 'ArrowDown') {
+      } else if (key === 'ArrowDown' || key.toLowerCase() === 's') {
         dropPlayer();
-      } else if (key === 'ArrowUp') {
+      } else if (key === 'ArrowUp' || key.toLowerCase() === 'w') {
         playerRotate(stage, 1);
       }
     }
@@ -90,9 +100,9 @@ export const Tetris: React.FC = () => {
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
             <div>
-              <Display text="Score" gameOver={gameOver} />
-              <Display text="Rows" gameOver={gameOver} />
-              <Display text="Level" gameOver={gameOver} />
+              <Display text={`Score ${score}`} />
+              <Display text={`Rows ${rows}`} />
+              <Display text={`Level ${level}`} />
             </div>
           )}
           <StartButton callback={startGame} />

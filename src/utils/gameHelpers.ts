@@ -3,8 +3,8 @@ import { TypePlayer } from "../types/TypePlayer";
 import { TypePos } from "../types/TypePos";
 import { TypeStage } from "../types/TypeStage";
 
-export const STAGE_WIDTH = 16;
-export const STAGE_HEIGHT = 26;
+export const STAGE_WIDTH = 12;
+export const STAGE_HEIGHT = 20;
 
 export const createStage = () => (
   Array.from(Array(STAGE_HEIGHT), () => (
