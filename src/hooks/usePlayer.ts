@@ -17,8 +17,9 @@ interface PlayerPos {
 type updatePlayerPos = (playerPos: PlayerPos) => void;
 type resetPlayer = () => void;
 type playerRotate = (stage: TypeStage, dir: number) => void;
+type PlayerHookResult = [TypePlayer, updatePlayerPos, resetPlayer, playerRotate];
 
-export const usePlayer = (): [TypePlayer, updatePlayerPos, resetPlayer, playerRotate] => {
+export const usePlayer = (): PlayerHookResult => {
   const [player, setPlayer] = useState<TypePlayer>({
     pos: { x: 0, y: 0 },
     tetromino: TETROMINOS[0].shape,
