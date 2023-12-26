@@ -4,15 +4,15 @@ import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { createStage } from '../utils/gameHelpers';
 
 // Types
-import { TypeCell } from '../types/TypeCell';
 import { TypePlayer } from '../types/TypePlayer';
+import { TypeStage } from '../types/TypeStage';
 
-export const useStage = (player: TypePlayer, resetPlayer: () => void): [TypeCell[][], Dispatch<SetStateAction<TypeCell[][]>>] => {
+export const useStage = (player: TypePlayer, resetPlayer: () => void): [TypeStage, Dispatch<SetStateAction<TypeStage>>] => {
   const [stage, setStage] = useState(createStage());
 
   useEffect(() => {
-    const updateStage = (prevStage: TypeCell[][]) => {
-      const newStage: TypeCell[][] = prevStage.map(row => (
+    const updateStage = (prevStage: TypeStage) => {
+      const newStage: TypeStage = prevStage.map(row => (
         row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
       ));
 
@@ -27,11 +27,15 @@ export const useStage = (player: TypePlayer, resetPlayer: () => void): [TypeCell
         });
       });
 
+      if (player.collided) {
+        resetPlayer();
+      }
+
       return newStage;
     }
 
     setStage(prev => updateStage(prev));
-  }, [player])
+  }, [player, resetPlayer])
 
   return [stage, setStage];
 };
