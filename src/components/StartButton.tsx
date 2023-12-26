@@ -8,5 +8,5 @@ interface Props {
 };
 
 export const StartButton: React.FC<Props> = ({ callback }) => (
-  <StyledStartButton onClick={callback}>Start Game</StyledStartButton>
+  <StyledStartButton type='button' onClick={callback}>Start Game</StyledStartButton>
 );

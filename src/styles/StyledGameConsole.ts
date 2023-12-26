@@ -7,8 +7,8 @@ interface Props {
 
 export const StyledGameConsole = styled.div<Props>`
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  right: 40px;
+  bottom: 80px;
   
   display: grid;
   grid-template-rows: repeat(

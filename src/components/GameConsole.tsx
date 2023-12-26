@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Imgs
 import rotateArrow from '../img/rotate-right.png';
 import leftArrow from '../img/move-left.png';
@@ -5,9 +7,9 @@ import rightArrow from '../img/move-right.png';
 import downArrow from '../img/move-down.png';
 
 // Styled Components
-import { StyledConsoleButton, Empty, Icon } from '../styles/StyledConsoleButton';
+import { Empty, Icon } from '../styles/StyledConsoleButton';
 import { StyledGameConsole } from '../styles/StyledGameConsole';
-import React from 'react';
+import { ConsoleButton } from './ConsoleButton';
 
 interface Props {
   left: () => void;
@@ -17,24 +19,30 @@ interface Props {
 }
 
 export const GameConsole: React.FC<Props> = ({ left, rotate, right, down}) => (
-  <StyledGameConsole height={2} width={3}>
-    <StyledConsoleButton type='button' onClick={left}>
+  <StyledGameConsole
+    height={2}
+    width={3}
+    onContextMenu={(event: React.MouseEvent) => {
+      event.preventDefault();
+   }}
+  >
+    <ConsoleButton callback={left}>
       <Icon src={leftArrow} alt='move left' />
-    </StyledConsoleButton>
+    </ConsoleButton>
 
-    <StyledConsoleButton type='button' onClick={rotate}>
+    <ConsoleButton callback={rotate}>
       <Icon src={rotateArrow} alt='rotate right' />
-    </StyledConsoleButton>
+    </ConsoleButton>
 
-    <StyledConsoleButton type='button' onClick={right}>
+    <ConsoleButton callback={right}>
       <Icon src={rightArrow} alt='move right' />
-    </StyledConsoleButton>
+    </ConsoleButton>
 
     <Empty />
 
-    <StyledConsoleButton type='button' onClick={down}>
+    <ConsoleButton callback={down}>
       <Icon src={downArrow} alt='move down' />
-    </StyledConsoleButton>
+    </ConsoleButton>
 
     <Empty />
   </StyledGameConsole>
