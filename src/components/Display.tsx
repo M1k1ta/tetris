@@ -5,9 +5,9 @@ import { StyledDisplay } from '../styles/StyledDisplay';
 
 interface Props {
   text: string;
-  gameOver: boolean;
+  gameOver?: boolean;
 };
 
-export const Display: React.FC<Props> = ({ text, gameOver }) => (
+export const Display: React.FC<Props> = ({ text, gameOver = false }) => (
   <StyledDisplay gameOver={gameOver}>{text}</StyledDisplay>
 );
