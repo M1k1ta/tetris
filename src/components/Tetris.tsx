@@ -16,6 +16,7 @@ import { StartButton } from './StartButton';
 
 // Utils
 import { createStage, checkCollision } from '../utils/gameHelpers';
+import { GameConsole } from './GameConsole';
 
 export const Tetris: React.FC = () => {
   const [dropTime, setDropTime] = useState<number | null>(null);
@@ -106,7 +107,18 @@ export const Tetris: React.FC = () => {
             </div>
           )}
           <StartButton callback={startGame} />
+
         </aside>
+
+        <GameConsole
+          left={() => movePlayer(-1)}
+          rotate={() => playerRotate(stage, 1)}
+          right={() => movePlayer(1)}
+          down={() => {
+            dropPlayer();
+            setDropTime(1000 / (level + 1));
+          }}
+        />
       </StyledTetris>
     </StyledTetrisWrapper>
   );
