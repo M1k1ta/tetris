@@ -4,6 +4,7 @@ import React, { KeyboardEvent, useState } from 'react';
 import { StyledTetris, StyledTetrisWrapper } from '../styles/StyledTetris';
 
 // Custom Hooks
+import { useInterval } from '../hooks/useInterval';
 import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
 
@@ -16,11 +17,11 @@ import { StartButton } from './StartButton';
 import { createStage, checkCollision } from '../utils/gameHelpers';
 
 export const Tetris: React.FC = () => {
-  const [dropTime, setDropTime] = useState(null);
+  const [dropTime, setDropTime] = useState<number | null>(null);
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage] = useStage(player, resetPlayer);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
 
   const movePlayer = (dir: number) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -30,6 +31,7 @@ export const Tetris: React.FC = () => {
 
   const startGame = () => {
     setStage(createStage());
+    setDropTime(1000);
     resetPlayer();
     setGameOver(false);
   };
@@ -47,7 +49,16 @@ export const Tetris: React.FC = () => {
     }
   };
 
+  const keyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
+    if (!gameOver) {
+      if (key === 'ArrowDown') {
+        setDropTime(1000);
+      }
+    }
+  };
+
   const dropPlayer = () => {
+    setDropTime(null);
     drop();
   };
 
@@ -65,8 +76,12 @@ export const Tetris: React.FC = () => {
     }
   };
 
+  useInterval(() => {
+    drop();
+  }, dropTime)
+
   return (
-    <StyledTetrisWrapper role="button" tabIndex={0} onKeyDown={e => move(e)}>
+    <StyledTetrisWrapper role="button" tabIndex={0} onKeyDown={move} onKeyUp={keyUp}>
       <StyledTetris>
         <Stage stage={stage} />
 
