@@ -18,4 +18,8 @@ export const StyledDisplay = styled.div<Props>`
   background-color: #000;
   font-family: PixelifySans, Arial, Helvetica, sans-serif;
   font-size: 0.8rem;
+
+  @media (max-width: 700px) {
+    font-size: 0.6rem;
+  }
 `;

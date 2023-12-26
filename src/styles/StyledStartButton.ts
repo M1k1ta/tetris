@@ -18,4 +18,8 @@ export const StyledStartButton = styled.button`
   &:hover {
     background-color: #999;
   }
+
+  @media (max-width: 700px) {
+    font-size: 0.8rem;
+  }
 `;
