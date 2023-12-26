@@ -1,7 +1,8 @@
+import { TypePos } from './TypePos';
 import { TypeTetrominoKey } from './TypeTetrominoKey';
 
 export interface TypePlayer {
-  pos: { x: number, y: number };
+  pos: TypePos;
   tetromino: TypeTetrominoKey[][];
   collided: boolean;
 }

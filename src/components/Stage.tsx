@@ -7,10 +7,10 @@ import { StyledStage } from '../styles/StyledStage';
 import { Cell } from './Cell';
 
 // Types
-import { TypeCell } from '../types/TypeCell';
+import { TypeStage } from '../types/TypeStage';
 
 interface Props {
-  stage: TypeCell[][];
+  stage: TypeStage;
 };
 
 export const Stage: React.FC<Props> = ({ stage }) => (
