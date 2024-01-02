@@ -7,6 +7,7 @@ import { TETROMINOS, randomTetromino } from '../utils/tetrominos';
 import { TypePlayer } from '../types/TypePlayer';
 import { STAGE_WIDTH, checkCollision } from '../utils/gameHelpers';
 import { TypeStage } from '../types/TypeStage';
+import { TypeTetrominoKey } from '../types/TypeTetrominoKey';
 
 interface PlayerPos {
   x: number;
@@ -17,7 +18,7 @@ interface PlayerPos {
 type updatePlayerPos = (playerPos: PlayerPos) => void;
 type resetPlayer = () => void;
 type playerRotate = (stage: TypeStage, dir: number) => void;
-type PlayerHookResult = [TypePlayer, updatePlayerPos, resetPlayer, playerRotate];
+type PlayerHookResult = [TypePlayer, updatePlayerPos, resetPlayer, playerRotate, TypeTetrominoKey[][]];
 
 export const usePlayer = (): PlayerHookResult => {
   const [player, setPlayer] = useState<TypePlayer>({
@@ -25,6 +26,7 @@ export const usePlayer = (): PlayerHookResult => {
     tetromino: TETROMINOS[0].shape,
     collided: false,
   });
+  const [nextTetromino, setNextTetromino] = useState<TypeTetrominoKey[][]>(randomTetromino().shape);
 
   const rotate = (matrix: TypeStage, dir: number) => {
     const rotatedTetro = matrix.map((_, index) => (
@@ -67,13 +69,31 @@ export const usePlayer = (): PlayerHookResult => {
     }));
   };
 
+  const convertToSquareShape = (originalShape: TypeTetrominoKey[][]) => {
+    const numRows = 6;
+    const squareShape = Array.from({ length: numRows }, () =>
+      Array.from({ length: numRows }).fill(0)
+    );
+  
+    for (let i = 0; i < originalShape.length; i++) {
+      for (let j = 0; j < originalShape[i].length; j++) {
+        const rowIndex = Math.floor((numRows - originalShape.length) / 2) + i;
+        const colIndex = Math.floor((numRows - originalShape[i].length) / 2) + j;
+        squareShape[rowIndex][colIndex] = originalShape[i][j];
+      }
+    }
+  
+    return squareShape as TypeTetrominoKey[][];
+  }
+
   const resetPlayer = useCallback(() => {
     setPlayer({
       pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
-      tetromino: randomTetromino().shape,
+      tetromino: nextTetromino,
       collided: false,
     });
-  }, [])
+    setNextTetromino(randomTetromino().shape);
+  }, [nextTetromino])
 
-  return [player, updatePlayerPos, resetPlayer, playerRotate];
+  return [player, updatePlayerPos, resetPlayer, playerRotate, convertToSquareShape(nextTetromino)];
 };

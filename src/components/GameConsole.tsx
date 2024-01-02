@@ -7,9 +7,10 @@ import rightArrow from '../img/move-right.png';
 import downArrow from '../img/move-down.png';
 
 // Styled Components
-import { Empty, Icon } from '../styles/StyledConsoleButton';
+import { Empty } from '../styles/StyledConsoleButton';
 import { StyledGameConsole } from '../styles/StyledGameConsole';
 import { ConsoleButton } from './ConsoleButton';
+import { StyledIcon } from '../styles/StyledIcon';
 
 interface Props {
   left: () => void;
@@ -27,21 +28,21 @@ export const GameConsole: React.FC<Props> = ({ left, rotate, right, down}) => (
    }}
   >
     <ConsoleButton callback={left}>
-      <Icon src={leftArrow} alt='move left' />
+      <StyledIcon src={leftArrow} alt='move left' />
     </ConsoleButton>
 
     <ConsoleButton callback={rotate}>
-      <Icon src={rotateArrow} alt='rotate right' />
+      <StyledIcon src={rotateArrow} alt='rotate right' />
     </ConsoleButton>
 
     <ConsoleButton callback={right}>
-      <Icon src={rightArrow} alt='move right' />
+      <StyledIcon src={rightArrow} alt='move right' />
     </ConsoleButton>
 
     <Empty />
 
     <ConsoleButton callback={down}>
-      <Icon src={downArrow} alt='move down' />
+      <StyledIcon src={downArrow} alt='move down' />
     </ConsoleButton>
 
     <Empty />

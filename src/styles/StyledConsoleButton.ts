@@ -5,7 +5,3 @@ export const StyledConsoleButton = styled.button`
 `;
 
 export const Empty = styled.div``;
-
-export const Icon = styled.img`
-  width: 80%;
-`;

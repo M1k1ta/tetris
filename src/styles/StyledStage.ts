@@ -6,6 +6,8 @@ interface Props {
 }
 
 export const StyledStage = styled.div<Props>`
+  position: relative;
+
   display: grid;
   grid-template-rows: repeat(
     ${props => props.height},
@@ -15,14 +17,14 @@ export const StyledStage = styled.div<Props>`
   gap: 1px;
   border: 2px solid #333;
   width: 100%;
-  min-width: 150px;
   max-width: 25vw;
   background-color: #1118;
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
+    min-width: 200px;
     grid-template-rows: repeat(
       ${props => props.height},
-      calc(150px / ${props => props.width})
+      calc(200px / ${props => props.width})
     );
   }
 `;

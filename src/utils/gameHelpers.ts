@@ -26,4 +26,4 @@ export const checkCollision = (player: TypePlayer, stage: TypeStage, { x: moveX,
       }
     }
   }
-}
+};
