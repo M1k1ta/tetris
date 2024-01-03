@@ -20,6 +20,7 @@ import { NextTetromino } from './NextTetromino';
 import { TetrisMenu } from './TetrisMenu';
 import { SettingMenu } from './SettingMenu';
 import { dropSpeeds } from '../utils/dropSpeed';
+import { DocModal } from './DocModal';
 
 export const Tetris: React.FC = () => {
   const [dropTime, setDropTime] = useState<number | null>(null);
@@ -27,6 +28,7 @@ export const Tetris: React.FC = () => {
   const [gameStop, setGameStop] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const [isDocActive, setIsDocActive] = useState(true);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate, nextTetromino] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
@@ -34,6 +36,10 @@ export const Tetris: React.FC = () => {
   const [dropSpeed, setDropSpeed] = useState(dropSpeeds.normal);
 
   const movePlayer = (dir: number) => {
+    if (gameStart || gameStop || gameOver) {
+      return;
+    }
+
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
     }
@@ -67,7 +73,7 @@ export const Tetris: React.FC = () => {
   }
 
   const drop = () => {
-    if (gameStop) {
+    if (gameStart || gameStop || gameOver) {
       return;
     }
 
@@ -106,7 +112,7 @@ export const Tetris: React.FC = () => {
   };
 
   const move = ({ keyCode }: KeyboardEvent<HTMLDivElement>) => {
-    if (gameStop) {
+    if (gameStart || gameStop || gameOver) {
       return;
     }
 
@@ -124,10 +130,16 @@ export const Tetris: React.FC = () => {
   };
 
   const keyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
     move(event);
 
     if (event.keyCode === 80 && !gameStart && !gameOver) {
       (gameStop) ? continueGame() : stopGame();
+    }
+
+    if (event.keyCode === 112) {
+      setIsDocActive((current) => !current)
     }
   };
 
@@ -171,17 +183,25 @@ export const Tetris: React.FC = () => {
             </div>
           )}
         </aside>
-
-        <GameConsole
-          left={() => movePlayer(-1)}
-          rotate={() => playerRotate(stage, 1)}
-          right={() => movePlayer(1)}
-          down={() => {
-            dropPlayer();
-            setDropTime(1000 / (level + 1));
-          }}
-        />
       </StyledTetris>
+
+      <DocModal isActive={isDocActive} setIsActive={() => setIsDocActive((current) => !current)} />
+
+      <GameConsole
+        left={() => movePlayer(-1)}
+        rotate={() => {
+          if (gameStart || gameStop || gameOver) {
+            return;
+          }
+      
+          playerRotate(stage, 1);
+        }}
+        right={() => movePlayer(1)}
+        down={() => {
+          dropPlayer();
+          setDropTime(1000 / (level + 1));
+        }}
+      />
     </StyledTetrisWrapper>
   );
 };
