@@ -1,13 +1,13 @@
 # Tetris
 [DEMO](https://m1k1ta.github.io/tetris)
 
-## Tehnologies
+## Technologies
 - React
 - TypeScript
 - Styled Components
 - Git
 
-## Game Control
+## Desctop Game Control
 - W / ArrowUp - Rotate Tetromino
 - A / ArrowLeft - Move Left Tetromino
 - S / ArrowDown - Drop Tetromino
