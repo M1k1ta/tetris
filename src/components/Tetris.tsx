@@ -20,7 +20,6 @@ import { NextTetromino } from './NextTetromino';
 import { TetrisMenu } from './TetrisMenu';
 import { SettingMenu } from './SettingMenu';
 import { dropSpeeds } from '../utils/dropSpeed';
-import { DocModal } from './DocModal';
 
 export const Tetris: React.FC = () => {
   const [dropTime, setDropTime] = useState<number | null>(null);
@@ -28,7 +27,6 @@ export const Tetris: React.FC = () => {
   const [gameStop, setGameStop] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
-  const [isDocActive, setIsDocActive] = useState(true);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate, nextTetromino] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
@@ -130,16 +128,10 @@ export const Tetris: React.FC = () => {
   };
 
   const keyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
     move(event);
 
     if (event.keyCode === 80 && !gameStart && !gameOver) {
       (gameStop) ? continueGame() : stopGame();
-    }
-
-    if (event.keyCode === 112) {
-      setIsDocActive((current) => !current)
     }
   };
 
@@ -184,8 +176,6 @@ export const Tetris: React.FC = () => {
           )}
         </aside>
       </StyledTetris>
-
-      <DocModal isActive={isDocActive} setIsActive={() => setIsDocActive((current) => !current)} />
 
       <GameConsole
         left={() => movePlayer(-1)}
